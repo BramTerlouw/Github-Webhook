@@ -33,7 +33,7 @@ jobs:
           BRANCH_NAME=${GITHUB_REF#refs/heads/}
           TIMESTAMP_COMMIT=$(git log -1 --pretty=format:'%ct')
           COMMIT_MESSAGE=$(git log -1 --pretty=format:'%s')
-          PAYLOAD_DATA="{\"CommitMadeBy\":\"$COMMITTER_NAME\", \"Branch\":\"$BRANCH_NAME\", \"TimestampCommit\":\"$TIMESTAMP_COMMIT\", \"CommitMessage\":\"$COMMIT_MESSAGE\"}"
+          PAYLOAD_DATA="{\"commitMadeBy\":\"$COMMITTER_NAME\", \"branch\":\"$BRANCH_NAME\", \"timestamp\":\"$TIMESTAMP_COMMIT\", \"message\":\"$COMMIT_MESSAGE\"}"
           echo "PAYLOAD_DATA=$PAYLOAD_DATA" >> $GITHUB_ENV
 
       - name: Display payload data
@@ -42,5 +42,5 @@ jobs:
 
       - name: Send POST request to Azure Function
         run: |
-          AZURE_FUNCTION_URL="https://b021-2a02-a458-a097-1-58a9-4e89-a1c9-13be.ngrok-free.app"
+          AZURE_FUNCTION_URL="https://ed0a-2a02-a458-a097-1-58a9-4e89-a1c9-13be.ngrok-free.app/api/Github_http_trigger"
           curl -X POST -H "Content-Type: application/json" -d "$PAYLOAD_DATA" "$AZURE_FUNCTION_URL"
