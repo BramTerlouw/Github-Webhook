@@ -25,9 +25,22 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
 
-      # Runs three commands which define the destination URL, the required payload and a curl to the url with the payload
-      - name: Run a multi-line script
+      - name: Set payload data
+        id: set-payload
         run: |
           AZURE_FUNCTION_URL="http://localhost:7079/api/Github_http_trigger"
-          PAYLOAD_DATA='{"CommitMadeBy":"value", "Branch":"value", "TimestampCommit":"value", "CommitMessage":"value"}'
+          COMMITTER_NAME=$(git log -1 --pretty=format:'%an')
+          BRANCH_NAME=${GITHUB_REF#refs/heads/}
+          TIMESTAMP_COMMIT=$(git log -1 --pretty=format:'%ct')
+          COMMIT_MESSAGE=$(git log -1 --pretty=format:'%s')
+          PAYLOAD_DATA="{\"CommitMadeBy\":\"$COMMITTER_NAME\", \"Branch\":\"$BRANCH_NAME\", \"TimestampCommit\":\"$TIMESTAMP_COMMIT\", \"CommitMessage\":\"$COMMIT_MESSAGE\"}"
+          echo "PAYLOAD_DATA=$PAYLOAD_DATA" >> $GITHUB_ENV
+
+      - name: Display payload data
+        run: |
+          echo "Payload Data: $PAYLOAD_DATA"
+
+      - name: Send POST request to Azure Function
+        run: |
+          AZURE_FUNCTION_URL="http://localhost:7079/api/Github_http_trigger"
           curl -X POST -H "Content-Type: application/json" -d "$PAYLOAD_DATA" "$AZURE_FUNCTION_URL"
