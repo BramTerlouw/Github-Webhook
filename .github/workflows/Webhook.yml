@@ -28,7 +28,7 @@ jobs:
       - name: Set payload data
         id: set-payload
         run: |
-          AZURE_FUNCTION_URL="http://localhost:7079/api/Github_http_trigger"
+          AZURE_FUNCTION_URL="https://b021-2a02-a458-a097-1-58a9-4e89-a1c9-13be.ngrok-free.app"
           COMMITTER_NAME=$(git log -1 --pretty=format:'%an')
           BRANCH_NAME=${GITHUB_REF#refs/heads/}
           TIMESTAMP_COMMIT=$(git log -1 --pretty=format:'%ct')
