@@ -42,5 +42,5 @@ jobs:
 
       - name: Send POST request to Azure Function
         run: |
-          AZURE_FUNCTION_URL="https://c2c7-2a02-a458-a097-1-bb7a-19e3-26b-bfb5.ngrok-free.app/api/Github_http_trigger"
+          AZURE_FUNCTION_URL="https://1285-2a02-a458-a097-1-bb7a-19e3-26b-bfb5.ngrok-free.app/api/Github_http_trigger"
           curl -X POST -H "Content-Type: application/json" -d "$PAYLOAD_DATA" "$AZURE_FUNCTION_URL"
